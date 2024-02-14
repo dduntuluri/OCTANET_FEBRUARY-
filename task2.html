@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      background-color: #3498db;
+      padding: 20px;
+      color: #fff;
+    }
+
+    #add-task-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      padding: 5px;
+      border: 1px solid #2a2525;
+      border-radius: 3px;
+    }
+
+    #task-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      margin-bottom: 5px;
+    }
+
+    .task-item:hover {
+      background-color: #eee;
+    }
+
+    .task-name {
+      flex-grow: 1;
+      color: #fff;
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .task-actions button {
+      padding: 5px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .task-actions button:hover {
+      background-color: #ccc;
+    }
+
+    .task-completed {
+      text-decoration: line-through;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>To-Do List</h1>
+
+  <form id="add-task-form">
+    <label for="task-name">Task Name:</label>
+    <input type="text" id="task-name" required>
+
+    <label for="priority">Priority:</label>
+    <select id="priority">
+      <option value="high">High</option>
+      <option value="medium">Medium</option>
+      <option value="low">Low</option>
+    </select>
+
+    <label for="deadline">Deadline:</label>
+    <input type="date" id="deadline" required>
+
+    <button type="button" onclick="addTask()">Add Task</button>
+  </form>
+
+  <ul id="task-list"></ul>
+
+  <script>
+    function addTask() {
+      const taskName = document.getElementById('task-name').value;
+      const priority = document.getElementById('priority').value;
+      const deadline = document.getElementById('deadline').value;
+
+      if (taskName.trim() === '') {
+        alert('Task name cannot be empty.');
+        return;
+      }
+
+      const taskList = document.getElementById('task-list');
+      const newTask = document.createElement('li');
+      newTask.className = 'task-item';
+      newTask.innerHTML = `
+        <span class="task-name">${taskName}</span>
+        <span>${deadline}</span>
+        <span class="task-actions">
+          <button onclick="toggleTaskCompletion(this)">Complete</button>
+          <button onclick="removeTask(this)">Remove</button>
+        </span>
+      `;
+
+      if (priority === 'high') {
+        newTask.style.backgroundColor = '#e74c3c';
+      } else if (priority === 'medium') {
+        newTask.style.backgroundColor = '#f39c12';
+      } else if (priority === 'low') {
+        newTask.style.backgroundColor = '#2ecc71';
+      }
+
+      taskList.appendChild(newTask);
+    }
+
+    function toggleTaskCompletion(button) {
+      const taskItem = button.closest('.task-item');
+      taskItem.classList.toggle('task-completed');
+    }
+
+    function removeTask(button) {
+      const taskItem = button.closest('.task-item');
+      taskItem.remove();
+    }
+  </script>
+
+</body>
+</html>
